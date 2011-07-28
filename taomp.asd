@@ -9,4 +9,5 @@
                (:file "tls")
                (:file "thread-id")
                (:file "c2/lock-one")
+               (:file "c2/lock-two")
                ))

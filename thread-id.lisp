@@ -6,6 +6,7 @@
 
 (tls:define *id* (calc-id))
 
+(declaim (ftype (function () fixnum) get))
 (defun get () *id*)
 
 (defun calc-id ()
