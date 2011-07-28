@@ -5,5 +5,8 @@
   :author "Takeru Ohta"
   :description "A implementation of the algorithms described in 『The Art of Multiprocessor Programming』"
   :serial t
-  :components ((:file "tls")
-               (:file "thread-id")))
+  :components ((:file "util")
+               (:file "tls")
+               (:file "thread-id")
+               (:file "c2/lock-one")
+               ))
