@@ -13,4 +13,5 @@
                (:file "c2/lock-two")
                (:file "c2/peterson-lock")
                (:file "c2/filter-lock")
+               (:file "c2/bakery-lock")
                ))
