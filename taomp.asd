@@ -19,5 +19,5 @@
 
                ;; chapter 7
                (:file "c7/tsa-lock")
-               
+               (:file "c7/ttsa-lock")
                ))
