@@ -17,7 +17,8 @@
   (make-lock-obj))
 
 (defun lock (lock-obj)
-  (loop WHILE (test-and-set-true (lock-obj-flag lock-obj))))
+  (when (test-and-set-true (lock-obj-flag lock-obj))
+    (lock lock-obj)))
 
 (defun unlock (lock-obj)
   (setf (lock-obj-flag lock-obj) nil))
