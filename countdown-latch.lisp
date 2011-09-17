@@ -22,4 +22,11 @@
 
 (defun countdown-and-await (latch)
   (atomic-decriment-if-plus latch)
-  (loop UNTIL (barrier (zerop (latch-count latch)))))
+  (loop UNTIL (barrier (zerop (latch-count latch))))
+  
+  #+IGNORE
+  (loop FOR cnt = (latch-count latch)
+        WHILE (plusp cnt)
+    DO
+    (sleep (/ (- cnt 1) 1000))))
+
