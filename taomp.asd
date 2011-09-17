@@ -37,4 +37,5 @@
                (:file "c8/simple-readwrite-lock")
                (:file "c8/fifo-readwrite-lock")
                (:file "c8/simple-reentrant-lock")
+               (:file "c8/semaphore")
                ))
