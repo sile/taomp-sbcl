@@ -105,4 +105,3 @@
           (tls-get my-node) node)))
 
 (define-with-trylock-macro with-trylock trylock unlock)
-

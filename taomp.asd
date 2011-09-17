@@ -11,6 +11,7 @@
                (:file "util")
                (:file "atomic-stamped-reference")
                (:file "timeout")
+               (:file "mutex-lock")
 
                ;; chapter 2
                (:file "c2/lock-one")
@@ -29,4 +30,7 @@
                (:file "c7/mcs-lock")
                (:file "c7/to-lock")
                (:file "c7/composit-lock")
+
+               ;; chapter 8
+               (:file "c8/locked-queue")
                ))
