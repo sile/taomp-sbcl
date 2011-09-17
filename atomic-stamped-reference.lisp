@@ -5,7 +5,9 @@
   (:export make
            get
            set
-           compare-and-set))
+           compare-and-set
+
+           asr))
 (in-package :atomic-stamped-reference)
 
 (defstruct ref

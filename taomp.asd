@@ -5,10 +5,12 @@
   :author "Takeru Ohta"
   :description "A implementation of the algorithms described in 『The Art of Multiprocessor Programming』"
   :serial t
-  :components ((:file "util")
-               (:file "countdown-latch")
+  :components ((:file "countdown-latch")
                (:file "tls")
                (:file "thread-id")
+               (:file "util")
+               (:file "atomic-stamped-reference")
+               (:file "timeout")
 
                ;; chapter 2
                (:file "c2/lock-one")
@@ -26,4 +28,5 @@
                (:file "c7/clh-lock")
                (:file "c7/mcs-lock")
                (:file "c7/to-lock")
+               (:file "c7/composit-lock")
                ))

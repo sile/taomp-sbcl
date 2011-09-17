@@ -1,8 +1,8 @@
-(defstruct timeout
+(defpackage timeout
   (:use :common-lisp)
   (:export make
            expired?))
-(in-package timeout)
+(in-package :timeout)
 
 (defstruct timeout
   (limit 0 :type fixnum))
@@ -13,4 +13,4 @@
                 
 (defun expired? (timeout-obj)
   (with-slots (limit) (the timeout timeout-obj)
-    (< (get-internal-real-time) limit)))
+    (not (< (get-internal-real-time) limit))))

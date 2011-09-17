@@ -19,8 +19,7 @@
   (make-lock-obj))
 
 (defun trylock (obj timeout)
-  (let ((start-time (get-internal-real-time))
-        (patience timeout)
+  (let ((tm (timeout:make timeout))
         (node (make-node)))
     (setf (tls-get (lock-obj-my-node obj)) node)
     
@@ -29,7 +28,7 @@
                 (eq (node-pred my-pred) *available*))
         (return-from trylock t))
 
-      (while (< (- (get-internal-real-time) start-time) patience)
+      (while (not (timeout:expired? tm))
         (let ((pred-pred (node-pred my-pred)))
           (when (eq pred-pred *available*)
             (return-from trylock t))
