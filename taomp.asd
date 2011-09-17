@@ -22,4 +22,5 @@
                (:file "c7/ttsa-lock")
                (:file "c7/backoff")
                (:file "c7/backoff-lock")
+               (:file "c7/a-lock")
                ))
