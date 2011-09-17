@@ -23,4 +23,5 @@
                (:file "c7/backoff")
                (:file "c7/backoff-lock")
                (:file "c7/a-lock")
+               (:file "c7/clh-lock")
                ))

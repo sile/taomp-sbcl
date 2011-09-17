@@ -10,6 +10,8 @@
 
            atomic-uint
            
+           get-and-set
+
            lock-test))
 (in-package :util)
 
@@ -30,13 +32,19 @@
 
 (defstruct tls-var
   (var (make-hash-table :test #'eq :synchronized t) 
-       :type hash-table))
+       :type hash-table)
+  (init (lambda ()) :type function))
 
-(defun make-tls ()
-  (make-tls-var))
+(defun make-tls (&optional (init-fn (lambda())))
+  (make-tls-var :init init-fn))
 
 (defun tls-get (tls-var)
-  (gethash sb-thread:*current-thread* (tls-var-var tls-var)))
+  (multiple-value-bind (x exists?)
+                       (gethash sb-thread:*current-thread* (tls-var-var tls-var))
+    (if exists?
+        x
+      (setf (tls-get tls-var) (funcall (tls-var-init tls-var))))))
+      
 
 (defun (setf tls-get) (new-var tls-var)
   (setf (gethash sb-thread:*current-thread* (tls-var-var tls-var))
@@ -72,3 +80,10 @@
         (time
          (test-fn lock begin-latch end-latch)))))
   :done)
+
+(defmacro get-and-set (place new)
+  `(loop FOR old = ,place THEN old~
+         FOR old~ = (sb-ext:compare-and-swap ,place old ,new)
+         UNTIL (eq old old~)
+         FINALLY
+         (return old)))

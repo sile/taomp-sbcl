@@ -26,5 +26,5 @@
   (loop FOR cnt = (barrier (latch-count latch))
         WHILE (plusp cnt)
     DO
-    (sleep (/ (- cnt 1) 1000))))
+    (sleep (/ (- cnt 1) 10000))))
 
