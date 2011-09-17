@@ -10,7 +10,7 @@
   (locked nil :type boolean))
 
 (defstruct lock-obj
-  (tail nil :type (or node null))
+  (tail nil :type node)
   (my-pred (make-tls) :type tls-var)
   (my-node (make-tls #'make-node) :type tls-var))
 
