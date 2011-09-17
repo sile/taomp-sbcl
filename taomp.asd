@@ -12,6 +12,7 @@
                (:file "atomic-stamped-reference")
                (:file "timeout")
                (:file "mutex-lock")
+               (:file "condition")
 
                ;; chapter 2
                (:file "c2/lock-one")
