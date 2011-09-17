@@ -2,6 +2,7 @@
   (:use :common-lisp)
   (:export while
            define-with-lock-macro
+           define-with-trylock-macro
            clear
            
            tls-get
@@ -12,6 +13,7 @@
            
            get-and-set
 
+           trylock-test
            lock-test))
 (in-package :util)
 
@@ -23,6 +25,15 @@
      (let ((obj (gensym)))
        `(let ((,obj ,lock-obj))
           (,',lock ,obj)
+          (unwind-protect
+              (locally ,@body)
+            (,',unlock ,obj))))))
+
+(defmacro define-with-trylock-macro (name lock unlock)
+  `(defmacro ,name ((lock-obj timeout) &body body)
+     (let ((obj (gensym)))
+       `(let ((,obj ,lock-obj))
+          (,',lock ,obj ,timeout)
           (unwind-protect
               (locally ,@body)
             (,',unlock ,obj))))))
@@ -63,11 +74,46 @@
     (flet ((test-fn (lock begin-latch end-latch)
              (countdown-latch:countdown-and-await begin-latch)
              (loop WITH tid = (thread-id:get)
-                   FOR i FROM 0 TO loop-count
+                   FOR i FROM 0 BELOW loop-count
                DO
                (funcall lock-fn lock)
                (when (zerop (mod i (max 1 (ceiling loop-count 5))))
                  (format t "~&; <THREAD ~a> ~a~%" tid i))
+               (funcall unlock-fn lock))
+             (countdown-latch:countdown-and-await end-latch)))
+      (let ((begin-latch (countdown-latch:make thread-num))
+            (end-latch (countdown-latch:make thread-num))
+            (lock (funcall make-fn)))
+        (loop REPEAT (1- thread-num)
+              DO (sb-thread:make-thread
+                  (lambda ()
+                    (test-fn lock begin-latch end-latch))))
+        (time
+         (test-fn lock begin-latch end-latch)))))
+  :done)
+
+(defun trylock-test (package-name timeout &optional (thread-num 5) (loop-count 10))
+  (util:clear)
+  (let* ((package (find-package package-name))
+         (lock-fn (find-symbol "TRYLOCK" package))
+         (unlock-fn (find-symbol "UNLOCK" package))
+         (make-fn (find-symbol "MAKE" package)))
+    
+    (flet ((test-fn (lock begin-latch end-latch)
+             (countdown-latch:countdown-and-await begin-latch)
+             (loop WITH tid = (thread-id:get)
+                   WITH expired-count = 0
+                   FOR i FROM 0 BELOW loop-count
+               DO
+               (if (not (funcall lock-fn lock timeout))
+                   (incf expired-count)
+                 (progn
+                   (when (zerop (mod i (max 1 (ceiling loop-count 5))))
+                     (format t "~&; <THREAD ~a> ~a~%" tid i))
+                   (funcall unlock-fn lock)))
+               FINALLY
+               (funcall lock-fn lock 1000)
+               (format t "~&; <THREAD ~a> expired count: ~a~%" tid expired-count)
                (funcall unlock-fn lock))
              (countdown-latch:countdown-and-await end-latch)))
       (let ((begin-latch (countdown-latch:make thread-num))
