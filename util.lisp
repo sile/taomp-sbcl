@@ -8,7 +8,9 @@
            tls-var
            make-tls
 
-           atomic-uint))
+           atomic-uint
+           
+           lock-test))
 (in-package :util)
 
 (defmacro while (exp &body body)
@@ -43,3 +45,30 @@
 (deftype atomic-uint () #+X86-64 '(unsigned-byte 64)
                         #-X86-64 '(unsigned-byte 32))
 
+(defun lock-test (package-name &optional (thread-num 5) (loop-count 10))
+  (util:clear)
+  (let* ((package (find-package package-name))
+         (lock-fn (find-symbol "LOCK" package))
+         (unlock-fn (find-symbol "UNLOCK" package))
+         (make-fn (find-symbol "MAKE" package)))
+    
+    (flet ((test-fn (lock begin-latch end-latch)
+             (countdown-latch:countdown-and-await begin-latch)
+             (loop WITH tid = (thread-id:get)
+                   FOR i FROM 0 TO loop-count
+               DO
+               (funcall lock-fn lock)
+               (when (zerop (mod i (max 1 (ceiling loop-count 5))))
+                 (format t "~&; <THREAD ~a> ~a~%" tid i))
+               (funcall unlock-fn lock))
+             (countdown-latch:countdown-and-await end-latch)))
+      (let ((begin-latch (countdown-latch:make thread-num))
+            (end-latch (countdown-latch:make thread-num))
+            (lock (funcall make-fn)))
+        (loop REPEAT (1- thread-num)
+              DO (sb-thread:make-thread
+                  (lambda ()
+                    (test-fn lock begin-latch end-latch))))
+        (time
+         (test-fn lock begin-latch end-latch)))))
+  :done)
