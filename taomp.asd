@@ -34,4 +34,5 @@
 
                ;; chapter 8
                (:file "c8/locked-queue")
+               (:file "c8/simple-readwrite-lock")
                ))
