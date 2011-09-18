@@ -46,4 +46,7 @@
                (:file "c9/optimistic-list")
                (:file "c9/lazy-list")
                (:file "c9/lock-free-list")
+
+               ;; chapter 10
+               (:file "c10/bounded-queue")
                ))
