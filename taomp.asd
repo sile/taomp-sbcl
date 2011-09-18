@@ -49,4 +49,5 @@
 
                ;; chapter 10
                (:file "c10/bounded-queue")
+               (:file "c10/unbounded-lockfree-queue")
                ))
