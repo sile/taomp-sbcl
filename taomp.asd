@@ -41,4 +41,5 @@
 
                ;; chapter 9
                (:file "c9/coarse-list")
+               (:file "c9/fine-list")
                ))

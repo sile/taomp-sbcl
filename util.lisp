@@ -17,6 +17,7 @@
            lock-test
 
            @lock
+           @unlock
            @with-lock
            @make-lock))
 (in-package :util)
@@ -146,3 +147,9 @@
 
 (defun @make-lock ()
   (mutex-lock:make))
+
+(defun @lock (lock)
+  (mutex-lock:lock lock))
+
+(defun @unlock (lock)
+  (mutex-lock:unlock lock))

@@ -30,7 +30,7 @@
 
 (defmethod print-object ((o @set) stream)
   (print-unreadable-object (o stream :identity t)
-    (format stream "~a ~s ~s ~s ~a" :set :type :coarse :size (size o))))
+    (format stream "~a ~s ~s ~s ~a" :set :granularity :coarse :size (size o))))
 
 (defun calc-key (item)
   (max (1+ most-negative-fixnum) (min (1- most-positive-fixnum) (sxhash item))))
