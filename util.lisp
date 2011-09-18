@@ -14,7 +14,11 @@
            get-and-set
 
            trylock-test
-           lock-test))
+           lock-test
+
+           @lock
+           @with-lock
+           @make-lock))
 (in-package :util)
 
 (defmacro while (exp &body body)
@@ -133,3 +137,12 @@
          UNTIL (eq old old~)
          FINALLY
          (return old)))
+
+(deftype @lock () 'mutex-lock:lock)
+
+(defmacro @with-lock (lock &body body)
+  `(mutex-lock:with-lock (,lock :re-entrant t)
+     ,@body))
+
+(defun @make-lock ()
+  (mutex-lock:make))

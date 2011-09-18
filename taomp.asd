@@ -8,10 +8,10 @@
   :components ((:file "countdown-latch")
                (:file "tls")
                (:file "thread-id")
-               (:file "util")
                (:file "atomic-stamped-reference")
                (:file "timeout")
                (:file "mutex-lock")
+               (:file "util")
                (:file "condition")
 
                ;; chapter 2
@@ -38,4 +38,7 @@
                (:file "c8/fifo-readwrite-lock")
                (:file "c8/simple-reentrant-lock")
                (:file "c8/semaphore")
+
+               ;; chapter 9
+               (:file "c9/coarse-list")
                ))
