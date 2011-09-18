@@ -50,4 +50,7 @@
                ;; chapter 10
                (:file "c10/bounded-queue")
                (:file "c10/unbounded-lockfree-queue")
+
+               ;; chapter 11
+               (:file "c11/unbounded-lockfree-stack")
                ))

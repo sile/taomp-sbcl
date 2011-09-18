@@ -1,13 +1,16 @@
 (defpackage backoff
   (:use :common-lisp :util)
   (:export make
-           backoff))
+           backoff
+           object))
 (in-package :backoff)
 
 (defstruct backoff-obj
   (min-delay 0 :type fixnum)
   (max-delay 0 :type fixnum)
   (limit 0 :type fixnum))
+
+(deftype object () 'backoff-obj)
 
 (defun make (min-delay max-delay)
   (make-backoff-obj :min-delay min-delay
