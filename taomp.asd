@@ -53,4 +53,5 @@
 
                ;; chapter 11
                (:file "c11/unbounded-lockfree-stack")
+               (:file "c11/lockfree-exchanger")
                ))
