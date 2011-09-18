@@ -43,4 +43,5 @@
                (:file "c9/coarse-list")
                (:file "c9/fine-list")
                (:file "c9/optimistic-list")
+               (:file "c9/lazy-list")
                ))
