@@ -9,6 +9,7 @@
                (:file "tls")
                (:file "thread-id")
                (:file "atomic-stamped-reference")
+               (:file "atomic-markable-reference")
                (:file "timeout")
                (:file "mutex-lock")
                (:file "util")
@@ -44,4 +45,5 @@
                (:file "c9/fine-list")
                (:file "c9/optimistic-list")
                (:file "c9/lazy-list")
+               (:file "c9/lock-free-list")
                ))
