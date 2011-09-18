@@ -35,14 +35,19 @@
 (defun calc-key (item)
   (max (1+ most-negative-fixnum) (min (1- most-positive-fixnum) (sxhash item))))
 
+(defun find-candidate (head key)
+  (let ((prev head)
+        (curr (node-next head)))
+    (while (< (node-key curr) key)
+      (setf prev curr
+            curr (node-next curr)))
+    (values prev curr)))
+
 (defun add (set item &aux (key (calc-key item)))
   (with-slots (head lock) (the @set set)
     (@with-lock lock
-      (let ((prev head)
-            (curr (node-next head)))
-        (while (< (node-key curr) key)
-          (setf prev curr
-                curr (node-next curr)))
+      (multiple-value-bind (prev curr)
+                           (find-candidate head key)
         (unless (= key (node-key curr))
           (let ((node (make-node :key key :item item)))
             (setf (node-next node) curr
@@ -52,11 +57,8 @@
 (defun remove (set item &aux (key (calc-key item)))
   (with-slots (head lock) (the @set set)
     (@with-lock lock
-      (let ((prev head)
-            (curr (node-next head)))
-        (while (< (node-key curr) key)
-          (setf prev curr
-                curr (node-next curr)))
+      (multiple-value-bind (prev curr)
+                           (find-candidate head key)
         (when (= key (node-key curr))
           (setf (node-next prev) (node-next curr))
           t)))))
@@ -64,9 +66,7 @@
 (defun contains? (set item &aux (key (calc-key item)))
   (with-slots (head lock) (the @set set)
     (@with-lock lock
-      (let ((prev head)
-            (curr (node-next head)))
-        (while (< (node-key curr) key)
-          (setf prev curr
-                curr (node-next curr)))
+      (multiple-value-bind (prev curr)
+                           (find-candidate head key)
+        (declare (ignore prev))
         (= key (node-key curr))))))
