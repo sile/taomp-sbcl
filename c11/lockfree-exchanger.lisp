@@ -1,7 +1,9 @@
 (defpackage lockfree-exchanger
   (:use :common-lisp :util)
   (:export make
-           exchange))
+           exchange
+
+           object))
 (in-package :lockfree-exchanger)
 
 (eval-when (:compile-toplevel :load-toplevel)
