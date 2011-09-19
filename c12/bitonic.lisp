@@ -21,7 +21,7 @@
   (width 0 :type fixnum))
 
 (defun merger-new (width) 
-  (assert (zerop (mod width 2))) ; must be a power of 2
+  (assert (zerop (nth-value 1 (round (log width 2))))) ; must be a power of 2
   (make-merger :width width
                :layer (loop REPEAT (/ width 2)
                             COLLECT (make-balancer) INTO list
@@ -48,7 +48,7 @@
   (width 0 :type fixnum))
 
 (defun make (width)
-  (assert (zerop (mod width 2))) ; must be a power of 2
+  (assert (zerop (nth-value 1 (round (log width 2))))) ; must be a power of 2
   (make-bitonic :width width
                 :merger (merger-new width)
                 :half (when (> width 2)
