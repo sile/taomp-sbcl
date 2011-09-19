@@ -59,4 +59,5 @@
 
                ;; chapter 12
                (:file "c12/combining-tree")
+               (:file "c12/bitonic")
                ))
