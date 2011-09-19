@@ -56,4 +56,7 @@
                (:file "c11/lockfree-exchanger")
                (:file "c11/elimination-array")
                (:file "c11/elimination-backoff-stack")
+
+               ;; chapter 12
+               (:file "c12/combining-tree")
                ))
