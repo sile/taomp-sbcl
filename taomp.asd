@@ -61,4 +61,5 @@
                (:file "c12/combining-tree")
                (:file "c12/bitonic")
                (:file "c12/periodic")
+               (:file "c12/diffracting-tree")
                ))
