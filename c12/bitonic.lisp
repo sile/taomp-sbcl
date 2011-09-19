@@ -51,29 +51,16 @@
   (assert (zerop (mod width 2))) ; must be a power of 2
   (make-bitonic :width width
                 :merger (merger-new width)
-                :sub (when (> width 2) (merger-new (/ width 2)))
                 :half (when (> width 2)
                         (list (make (floor width 2))
                               (make (floor width 2))))))
 
-(defun traverse (bitonic input &aux (output 0))
+(defun traverse (bitonic input)
   (with-slots (half merger width) (the bitonic bitonic)
-#|
-    (when half
-      (setf output (traverse (first half) (floor input 2))))
-    (print (list (floor input 2) output))
-    (merger-traverse merger output)
-|#
-
-    (when (> width 2)
-      (setf output
-            (traverse (nth (floor input (floor width 2)) half)
-                      (floor input 2))))
-
-    (when (> width 2)
-      (print output))
-
-    (+ (merger-traverse merger (if (>= input (floor width 2))
-                                   (floor width 2)
-                                 0))
-         output)))
+    (cond ((<= width 2)
+           (merger-traverse merger input))
+          ((< input (floor width 2))
+           (merger-traverse merger (traverse (first half) (floor input 2))))
+          (t
+           (merger-traverse merger (+ (floor width 2)
+                                      (traverse (second half) (floor input 2))))))))
