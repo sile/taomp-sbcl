@@ -62,4 +62,8 @@
                (:file "c12/bitonic")
                (:file "c12/periodic")
                (:file "c12/diffracting-tree")
+
+               ;; chapter 13
+               (:file "c13/base-hash-set")
+               (:file "c13/coarse-hash-set")
                ))
