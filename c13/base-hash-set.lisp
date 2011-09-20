@@ -1,9 +1,15 @@
 (defpackage base-hash-set
   (:use :common-lisp :util)
+  (:nicknames base)
   (:export make
            add
            erase
-           contains?))
+           contains?
+
+           @hash
+           with-lock
+           table
+           set-size))
 (in-package :base-hash-set)
 
 (defstruct @hash

@@ -66,4 +66,5 @@
                ;; chapter 13
                (:file "c13/base-hash-set")
                (:file "c13/coarse-hash-set")
+               (:file "c13/striped-hash-set")
                ))
