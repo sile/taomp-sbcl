@@ -67,4 +67,5 @@
                (:file "c13/base-hash-set")
                (:file "c13/coarse-hash-set")
                (:file "c13/striped-hash-set")
+               (:file "c13/lockfree-hashset")
                ))
