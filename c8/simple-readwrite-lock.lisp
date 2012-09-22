@@ -29,7 +29,7 @@
   (with-slots (lock cnd readers) (the lock obj)
     (mutex-lock:with-lock (lock :re-entrant t)
       (decf readers)
-      (while (= 0 readers)
+      (when (= 0 readers)
         (condition:broadcast cnd)))))
 
 (defun write-lock (obj)
